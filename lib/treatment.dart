@@ -342,6 +342,7 @@ class TreatmentTimelineItem extends StatefulWidget {
 class _TreatmentTimelineItemState extends State<TreatmentTimelineItem> {
   bool _showDetails = false;
   bool _showBeforeAfter = false;
+  bool _showSuggestion = false; // NEW: for suggestion dropdown
 
   final Map<String, String> _treatmentImages = {
     'Laser Hair Removal': 'assets/laserhairremoval.jpg',
@@ -378,9 +379,38 @@ class _TreatmentTimelineItemState extends State<TreatmentTimelineItem> {
     },
   };
 
+  // NEW: Suggested next treatment mapping
+  final Map<String, Map<String, String>> _suggestedNextTreatment = {
+    'Laser Hair Removal': {
+      'name': 'Soothing Facial Treatments',
+      'image': 'assets/st/soothingtreatments.jpg',
+    },
+    'Chemical Peel': {
+      'name': 'Intensive Moisturizing Treatments',
+      'image': 'assets/st/intensivemoisturizing.jpg',
+    },
+    'Facial Treatment': {
+      'name': 'Gentle Exfoliation Treatments',
+      'image': 'assets/st/gentleexfoliation.jpg',
+    },
+    'Acne Therapy': {
+      'name': 'Hydrating Treatments',
+      'image': 'assets/st/hydratingtreatment.jpg',
+    },
+    'default': {
+      'name': 'Anti-Redness Treatments',
+      'image': 'assets/st/antiredness.jpg',
+    },
+  };
+
   Map<String, String> _getProductRecommendation(String type) {
     return _productRecommendations[type.toLowerCase()] ??
         _productRecommendations['default']!;
+  }
+
+  // NEW: Get suggested next treatment
+  Map<String, String> _getSuggestedNextTreatment(String treatmentName) {
+    return _suggestedNextTreatment[treatmentName] ?? _suggestedNextTreatment['default']!;
   }
 
   @override
@@ -388,6 +418,7 @@ class _TreatmentTimelineItemState extends State<TreatmentTimelineItem> {
     final recommendation = _getProductRecommendation(widget.type);
     final treatmentImage = _treatmentImages[widget.treatmentName] ??
         'assets/images/acnetherapy.jpg';
+    final suggestion = _getSuggestedNextTreatment(widget.treatmentName);
 
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -660,6 +691,87 @@ class _TreatmentTimelineItemState extends State<TreatmentTimelineItem> {
                           ),
                         ],
                       ),
+                    ),
+                  // --- Suggestion Treatment Dropdown ---
+                  if (widget.status.toLowerCase() == 'completed')
+                    Column(
+                      children: [
+                        ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          title: const Text(
+                            'Suggestion Treatment After Completing the Treatment',
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
+                          trailing: IconButton(
+                            icon: Icon(
+                              _showSuggestion ? Icons.expand_less : Icons.expand_more,
+                              color: Colors.pink,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _showSuggestion = !_showSuggestion;
+                              });
+                            },
+                          ),
+                        ),
+                        if (_showSuggestion)
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.blue[50],
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: Colors.blue.shade100),
+                            ),
+                            child: Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.asset(
+                                    suggestion['image']!,
+                                    width: 80,
+                                    height: 80,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      print('Error loading image: ${suggestion['image']}');
+                                      return Container(
+                                        width: 80,
+                                        height: 80,
+                                        color: Colors.grey[300],
+                                        child: const Icon(Icons.image_not_supported, size: 48, color: Colors.grey),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Suggested Next Treatment:',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.blue[700],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        suggestion['name']!,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        const SizedBox(height: 12),
+                      ],
                     ),
                 ],
               ),
