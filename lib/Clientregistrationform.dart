@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'servicesregistration.dart';
 
 class ClientRegistrationForm extends StatefulWidget {
   const ClientRegistrationForm({super.key});
@@ -29,7 +30,7 @@ class _ClientRegistrationFormState extends State<ClientRegistrationForm> {
       resizeToAvoidBottomInset: true, // ✅ allow body to adjust when keyboard appears
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.fromLTRB(24, 24, 24, 70), // Increased bottom padding further
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -49,17 +50,19 @@ class _ClientRegistrationFormState extends State<ClientRegistrationForm> {
                 ),
               ),
               const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildStepCircle('1', true),
-                  const Text('  Personal Info  >  ', style: TextStyle(color: Colors.pink, fontSize: 12,
-                  )),
-                  _buildStepCircle('2', false),
-                  const Text('  Select Services  >  ', style: TextStyle(color: Colors.black26, fontSize: 12)),
-                  _buildStepCircle('3', false),
-                  const Text('  Confirm', style: TextStyle(color: Colors.black26, fontSize: 12)),
-                ],
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildStepCircle('1', true),
+                    const Text('  Personal Info  >  ', style: TextStyle(color: Colors.pink, fontSize: 10)),
+                    _buildStepCircle('2', false),
+                    const Text('  Select Services  >  ', style: TextStyle(color: Colors.black26, fontSize: 10)),
+                    _buildStepCircle('3', false),
+                    const Text('  Confirm', style: TextStyle(color: Colors.black26, fontSize: 10)),
+                  ],
+                ),
               ),
               const SizedBox(height: 30),
               Form(
@@ -173,10 +176,10 @@ class _ClientRegistrationFormState extends State<ClientRegistrationForm> {
                       child: ElevatedButton.icon(
                         onPressed: () {
                           if (_formKey.currentState!.validate() && agreeToTerms) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Form submitted!')),
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ServicesRegistrationPage()),
                             );
-                            // Navigator.pushNamed(context, '/nextPage'); // Uncomment if you want navigation
                           }
                         },
                         icon: const Icon(Icons.arrow_forward, color: Colors.white),
@@ -193,7 +196,7 @@ class _ClientRegistrationFormState extends State<ClientRegistrationForm> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 70), // Increased bottom spacing further
                   ],
                 ),
               ),
