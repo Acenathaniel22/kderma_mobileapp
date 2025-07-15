@@ -1,11 +1,102 @@
 import 'package:flutter/material.dart';
 
-class AppointmentPage extends StatelessWidget {
+class AppointmentPage extends StatefulWidget {
   const AppointmentPage({super.key});
 
   @override
+  State<AppointmentPage> createState() => _AppointmentPageState();
+}
+
+class _AppointmentPageState extends State<AppointmentPage> {
+  final TextEditingController _searchController = TextEditingController();
+  List<Appointment> _filteredAppointments = [];
+  String? _selectedStatus;
+
+  @override
+  void initState() {
+    super.initState();
+    _filteredAppointments = AppointmentStore().appointments;
+    _searchController.addListener(_filterAppointments);
+  }
+
+  void _filterAppointments() {
+    final query = _searchController.text.toLowerCase();
+
+    setState(() {
+      _filteredAppointments = AppointmentStore().appointments.where((appt) {
+        final matchesSearch = appt.clientName.toLowerCase().contains(query) ||
+            appt.service.toLowerCase().contains(query) ||
+            (appt.staffName ?? '').toLowerCase().contains(query) ||
+            appt.status.toLowerCase().contains(query);
+
+        final matchesStatus = _selectedStatus == null || appt.status == _selectedStatus;
+
+        return matchesSearch && matchesStatus;
+      }).toList();
+    });
+  }
+
+  void _showFilterOptions() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Wrap(
+          children: [
+            ListTile(
+              title: const Text('All'),
+              onTap: () {
+                setState(() {
+                  _selectedStatus = null;
+                });
+                _filterAppointments();
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Pending'),
+              onTap: () {
+                setState(() {
+                  _selectedStatus = 'Pending';
+                });
+                _filterAppointments();
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Confirmed'),
+              onTap: () {
+                setState(() {
+                  _selectedStatus = 'Confirmed';
+                });
+                _filterAppointments();
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Rejected'),
+              onTap: () {
+                setState(() {
+                  _selectedStatus = 'Rejected';
+                });
+                _filterAppointments();
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final appointments = AppointmentStore().appointments;
+    final appointments = _filteredAppointments;
     return Scaffold(
       backgroundColor: const Color(0xFFFFF5F7),
       body: SafeArea(
@@ -33,18 +124,37 @@ class AppointmentPage extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Container(
+                      height: 48,
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       decoration: BoxDecoration(
                         color: Colors.pink.shade50,
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const TextField(
+                      child: TextField(
+                        controller: _searchController,
                         decoration: InputDecoration(
                           hintText: "Search appointments...",
                           border: InputBorder.none,
                           icon: Icon(Icons.search),
                         ),
                       ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+
+                  // Filter Button
+                  Container(
+                    height: 48,
+                    width: 48,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: IconButton(
+                      icon: const Icon(Icons.filter_list),
+                      onPressed: () {
+                        _showFilterOptions();
+                      },
                     ),
                   ),
                 ],
