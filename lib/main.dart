@@ -111,8 +111,12 @@ class _HomePageState extends State<HomePage> {
               accountName: Text('Daniel De Asis'),
               accountEmail: Text('Client'),
               currentAccountPicture: CircleAvatar(
-                backgroundImage: NetworkImage(
-                    'https://randomuser.me/api/portraits/men/1.jpg'),
+                backgroundColor: Colors.white,
+                child: Icon(
+                  Icons.person,
+                  size: 40,
+                  color: Colors.pinkAccent,
+                ),
               ),
               decoration: BoxDecoration(
                 color: Colors.pinkAccent,
