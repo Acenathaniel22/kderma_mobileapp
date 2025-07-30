@@ -31,7 +31,7 @@ class _TreatmentTimelineSectionState extends State<TreatmentTimelineSection> {
       'date': 'June 27, 2025',
       'status': 'Completed',
       'type': 'Facial',
-      'aesthetician': 'Daniel De Asis',
+      'aesthetician': 'George Adiz',
       'improvementPercentage': 78
     },
     {
