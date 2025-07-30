@@ -31,7 +31,7 @@ class _TreatmentTimelineSectionState extends State<TreatmentTimelineSection> {
       'date': 'June 27, 2025',
       'status': 'Completed',
       'type': 'Facial',
-      'aesthetician': 'Daniel De Asis',
+      'aesthetician': 'George Adiz',
       'improvementPercentage': 78
     },
     {
@@ -151,12 +151,15 @@ class _TreatmentTimelineSectionState extends State<TreatmentTimelineSection> {
                   controller: _searchController,
                   decoration: InputDecoration(
                     hintText: 'Search treatments...',
-                    prefixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                    prefixIcon: const Icon(Icons.search, color: Colors.pink),
                     filled: true,
-                    fillColor: Colors.grey[200],
+                    fillColor: Colors.pink[50],
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide.none,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -182,7 +185,8 @@ class _TreatmentTimelineSectionState extends State<TreatmentTimelineSection> {
                             status: treatment['status']!,
                             type: treatment['type']!,
                             aesthetician: treatment['aesthetician']!,
-                            improvementPercentage: treatment['improvementPercentage'] as int,
+                            improvementPercentage:
+                                treatment['improvementPercentage'] as int,
                             beforeImage:
                                 _getBeforeImage(treatment['treatmentName']!),
                             afterImage:
@@ -212,13 +216,13 @@ class _TreatmentTimelineSectionState extends State<TreatmentTimelineSection> {
       final date = DateTime.parse(_convertToIso(treatment['date']!));
 
       treatmentCounts[name] = (treatmentCounts[name] ?? 0) + 1;
-      aestheticianCounts[aesthetician] = (aestheticianCounts[aesthetician] ?? 0) + 1;
+      aestheticianCounts[aesthetician] =
+          (aestheticianCounts[aesthetician] ?? 0) + 1;
       dates.add(date);
     }
 
-    final mostFrequent = treatmentCounts.entries
-        .reduce((a, b) => a.value > b.value ? a : b)
-        .key;
+    final mostFrequent =
+        treatmentCounts.entries.reduce((a, b) => a.value > b.value ? a : b).key;
     final topAesthetician = aestheticianCounts.entries
         .reduce((a, b) => a.value > b.value ? a : b)
         .key;
@@ -270,7 +274,8 @@ class _TreatmentTimelineSectionState extends State<TreatmentTimelineSection> {
           Text(label),
           Text(
             value,
-            style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.pink),
+            style: const TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.pink),
           ),
         ],
       ),
@@ -410,7 +415,8 @@ class _TreatmentTimelineItemState extends State<TreatmentTimelineItem> {
 
   // NEW: Get suggested next treatment
   Map<String, String> _getSuggestedNextTreatment(String treatmentName) {
-    return _suggestedNextTreatment[treatmentName] ?? _suggestedNextTreatment['default']!;
+    return _suggestedNextTreatment[treatmentName] ??
+        _suggestedNextTreatment['default']!;
   }
 
   @override
@@ -457,7 +463,8 @@ class _TreatmentTimelineItemState extends State<TreatmentTimelineItem> {
                   runSpacing: 4,
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: Colors.green[100],
                         borderRadius: BorderRadius.circular(12),
@@ -471,7 +478,8 @@ class _TreatmentTimelineItemState extends State<TreatmentTimelineItem> {
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: Colors.pink[100],
                         borderRadius: BorderRadius.circular(12),
@@ -508,20 +516,21 @@ class _TreatmentTimelineItemState extends State<TreatmentTimelineItem> {
                   _showDetails = !_showDetails;
                 });
               },
-              icon: Icon(_showDetails
-                  ? Icons.arrow_drop_up
-                  : Icons.arrow_drop_down),
+              icon: Icon(
+                  _showDetails ? Icons.arrow_drop_up : Icons.arrow_drop_down),
               label: const Text('Details'),
             ),
           ),
           if (_showDetails)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
               child: Column(
                 children: [
                   Text(
                     widget.treatmentName,
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   Text('Date: ${widget.date}'),
@@ -533,7 +542,8 @@ class _TreatmentTimelineItemState extends State<TreatmentTimelineItem> {
                     runSpacing: 8,
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
                           color: Colors.green[100],
                           borderRadius: BorderRadius.circular(12),
@@ -547,7 +557,8 @@ class _TreatmentTimelineItemState extends State<TreatmentTimelineItem> {
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
                           color: Colors.pink[100],
                           borderRadius: BorderRadius.circular(12),
@@ -585,11 +596,14 @@ class _TreatmentTimelineItemState extends State<TreatmentTimelineItem> {
                           contentPadding: EdgeInsets.zero,
                           title: const Text(
                             'Before & After',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                           trailing: IconButton(
                             icon: Icon(
-                              _showBeforeAfter ? Icons.expand_less : Icons.expand_more,
+                              _showBeforeAfter
+                                  ? Icons.expand_less
+                                  : Icons.expand_more,
                               color: Colors.pink,
                             ),
                             onPressed: () {
@@ -605,23 +619,30 @@ class _TreatmentTimelineItemState extends State<TreatmentTimelineItem> {
                               Expanded(
                                 child: Column(
                                   children: [
-                                    const Text('Before', style: TextStyle(fontSize: 12)),
+                                    const Text('Before',
+                                        style: TextStyle(fontSize: 12)),
                                     const SizedBox(height: 4),
                                     widget.beforeImage != null
                                         ? ClipRRect(
-                                            borderRadius: BorderRadius.circular(8),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
                                             child: Image.asset(
                                               widget.beforeImage!,
                                               height: 80,
                                               fit: BoxFit.cover,
-                                              errorBuilder: (context, error, stackTrace) =>
-                                                  const Icon(Icons.image_not_supported, size: 48, color: Colors.grey),
+                                              errorBuilder: (context, error,
+                                                      stackTrace) =>
+                                                  const Icon(
+                                                      Icons.image_not_supported,
+                                                      size: 48,
+                                                      color: Colors.grey),
                                             ),
                                           )
                                         : Container(
                                             height: 80,
                                             color: Colors.grey[200],
-                                            child: const Center(child: Text('No Image'))),
+                                            child: const Center(
+                                                child: Text('No Image'))),
                                   ],
                                 ),
                               ),
@@ -629,23 +650,30 @@ class _TreatmentTimelineItemState extends State<TreatmentTimelineItem> {
                               Expanded(
                                 child: Column(
                                   children: [
-                                    const Text('After', style: TextStyle(fontSize: 12)),
+                                    const Text('After',
+                                        style: TextStyle(fontSize: 12)),
                                     const SizedBox(height: 4),
                                     widget.afterImage != null
                                         ? ClipRRect(
-                                            borderRadius: BorderRadius.circular(8),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
                                             child: Image.asset(
                                               widget.afterImage!,
                                               height: 80,
                                               fit: BoxFit.cover,
-                                              errorBuilder: (context, error, stackTrace) =>
-                                                  const Icon(Icons.image_not_supported, size: 48, color: Colors.grey),
+                                              errorBuilder: (context, error,
+                                                      stackTrace) =>
+                                                  const Icon(
+                                                      Icons.image_not_supported,
+                                                      size: 48,
+                                                      color: Colors.grey),
                                             ),
                                           )
                                         : Container(
                                             height: 80,
                                             color: Colors.grey[200],
-                                            child: const Center(child: Text('No Image')),
+                                            child: const Center(
+                                                child: Text('No Image')),
                                           ),
                                   ],
                                 ),
@@ -674,7 +702,8 @@ class _TreatmentTimelineItemState extends State<TreatmentTimelineItem> {
                               height: 48,
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) =>
-                                  const Icon(Icons.image_not_supported, size: 48, color: Colors.grey),
+                                  const Icon(Icons.image_not_supported,
+                                      size: 48, color: Colors.grey),
                             ),
                           ),
                           const SizedBox(width: 12),
@@ -700,11 +729,14 @@ class _TreatmentTimelineItemState extends State<TreatmentTimelineItem> {
                           contentPadding: EdgeInsets.zero,
                           title: const Text(
                             'Suggestion Treatment After Completing the Treatment',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                           trailing: IconButton(
                             icon: Icon(
-                              _showSuggestion ? Icons.expand_less : Icons.expand_more,
+                              _showSuggestion
+                                  ? Icons.expand_less
+                                  : Icons.expand_more,
                               color: Colors.pink,
                             ),
                             onPressed: () {
@@ -732,12 +764,16 @@ class _TreatmentTimelineItemState extends State<TreatmentTimelineItem> {
                                     height: 80,
                                     fit: BoxFit.cover,
                                     errorBuilder: (context, error, stackTrace) {
-                                      print('Error loading image: ${suggestion['image']}');
+                                      print(
+                                          'Error loading image: ${suggestion['image']}');
                                       return Container(
                                         width: 80,
                                         height: 80,
                                         color: Colors.grey[300],
-                                        child: const Icon(Icons.image_not_supported, size: 48, color: Colors.grey),
+                                        child: const Icon(
+                                            Icons.image_not_supported,
+                                            size: 48,
+                                            color: Colors.grey),
                                       );
                                     },
                                   ),
@@ -745,7 +781,8 @@ class _TreatmentTimelineItemState extends State<TreatmentTimelineItem> {
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'Suggested Next Treatment:',
